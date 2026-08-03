@@ -18,7 +18,7 @@ type Message interface {
 }
 
 const (
-	MSGTYPE_SENDTEXT = MsgType(iota)
+	MSGTYPE_SENDTEXT MsgType = iota
 
 	MSGTYPE_MAX
 )

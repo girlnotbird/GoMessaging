@@ -46,7 +46,7 @@ func main() {
 			}
 
 			switch msg := msg.(type) {
-			case *shared.Msg_SENDTEXT:
+			case *shared.MsgSendText:
 				model.messages = append(model.messages, msg.Text)
 				fmt.Fprintf(model.chatbox, "%s\n", msg.Text)
 				model.chatbox.ScrollToEnd()

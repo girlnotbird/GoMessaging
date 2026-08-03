@@ -25,7 +25,7 @@ func main() {
 	activeConns := make(map[net.Conn]bool)
 	countConns := 0
 
-	Broadcast := func(msg *shared.Msg_SENDTEXT, src net.Conn) {
+	Broadcast := func(msg *shared.MsgSendText, src net.Conn) {
 		clientsToDelete := make(map[net.Conn]bool)
 		for activeClient, _ := range activeConns {
 			mu.RLock()
@@ -77,7 +77,7 @@ func main() {
 			}
 
 			switch msg := msg.(type) {
-			case *shared.Msg_SENDTEXT:
+			case *shared.MsgSendText:
 				Broadcast(msg, conn)
 			default:
 				onError()
@@ -115,9 +115,9 @@ func MakeMessage(text string, src net.Conn) []byte {
 	remoteAddr := src.RemoteAddr().String()
 	payload := fmt.Sprintf("%s: %s", remoteAddr, text)
 	outBuf := make([]byte, len(payload)+8)
-	copy(outBuf[:4], shared.MSG_MAGIC[:])
+	copy(outBuf[:4], shared.MsgMagic[:])
 	binary.BigEndian.PutUint16(outBuf[4:6], uint16(len(payload))+8)
-	binary.BigEndian.PutUint16(outBuf[6:8], shared.MSGTYPE_SENDTEXT)
+	binary.BigEndian.PutUint16(outBuf[6:8], shared.TypeSendText)
 	copy(outBuf[8:], []byte(payload))
 	return outBuf
 }

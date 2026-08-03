@@ -43,9 +43,9 @@ func (self *Client) Send(text string) error {
 	}
 
 	outBuf := make([]byte, len(text)+8)
-	copy(outBuf[:4], shared.MSG_MAGIC[:])
+	copy(outBuf[:4], shared.MsgMagic[:])
 	binary.BigEndian.PutUint16(outBuf[4:6], uint16(len(text)+8))
-	binary.BigEndian.PutUint16(outBuf[6:8], shared.MSGTYPE_SENDTEXT)
+	binary.BigEndian.PutUint16(outBuf[6:8], shared.TypeSendText)
 	copy(outBuf[8:], []byte(text))
 
 	_, err := (self.c).Write(outBuf)
